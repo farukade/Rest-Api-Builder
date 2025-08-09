@@ -1,0 +1,346 @@
+/* Additional custom styles */
+.nav-link.active {
+  @apply bg-blue-600 text-white;
+}
+
+.endpoint-method {
+  font-family: "Monaco", "Menlo", "Consolas", monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  text-transform: uppercase;
+}
+
+.method-get {
+  @apply bg-green-100 text-green-800;
+}
+.method-post {
+  @apply bg-blue-100 text-blue-800;
+}
+.method-put {
+  @apply bg-yellow-100 text-yellow-800;
+}
+.method-delete {
+  @apply bg-red-100 text-red-800;
+}
+.method-patch {
+  @apply bg-purple-100 text-purple-800;
+}
+
+.dark .method-get {
+  @apply bg-green-900 text-green-300;
+}
+.dark .method-post {
+  @apply bg-blue-900 text-blue-300;
+}
+.dark .method-put {
+  @apply bg-yellow-900 text-yellow-300;
+}
+.dark .method-delete {
+  @apply bg-red-900 text-red-300;
+}
+.dark .method-patch {
+  @apply bg-purple-900 text-purple-300;
+}
+
+.code-editor {
+  font-family: "Monaco", "Menlo", "Consolas", monospace;
+  font-size: 0.875rem;
+}
+
+.response-status {
+  font-family: "Monaco", "Menlo", "Consolas", monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+}
+
+.status-2xx {
+  @apply bg-green-100 text-green-800;
+}
+.status-4xx {
+  @apply bg-yellow-100 text-yellow-800;
+}
+.status-5xx {
+  @apply bg-red-100 text-red-800;
+}
+
+.dark .status-2xx {
+  @apply bg-green-900 text-green-300;
+}
+.dark .status-4xx {
+  @apply bg-yellow-900 text-yellow-300;
+}
+.dark .status-5xx {
+  @apply bg-red-900 text-red-300;
+}
+
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Additional custom styles */
+.nav-link.active {
+  @apply bg-blue-600 text-white;
+}
+
+.endpoint-method {
+  font-family: "Monaco", "Menlo", "Consolas", monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  text-transform: uppercase;
+  min-width: 60px;
+  text-align: center;
+  display: inline-block;
+}
+
+.method-get {
+  @apply bg-green-100 text-green-800;
+}
+.method-post {
+  @apply bg-blue-100 text-blue-800;
+}
+.method-put {
+  @apply bg-yellow-100 text-yellow-800;
+}
+.method-delete {
+  @apply bg-red-100 text-red-800;
+}
+.method-patch {
+  @apply bg-purple-100 text-purple-800;
+}
+
+.dark .method-get {
+  @apply bg-green-900 text-green-300;
+}
+.dark .method-post {
+  @apply bg-blue-900 text-blue-300;
+}
+.dark .method-put {
+  @apply bg-yellow-900 text-yellow-300;
+}
+.dark .method-delete {
+  @apply bg-red-900 text-red-300;
+}
+.dark .method-patch {
+  @apply bg-purple-900 text-purple-300;
+}
+
+.response-status {
+  font-family: "Monaco", "Menlo", "Consolas", monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 0.25rem;
+  min-width: 50px;
+  text-align: center;
+  display: inline-block;
+}
+
+.status-2xx {
+  @apply bg-green-100 text-green-800;
+}
+.status-4xx {
+  @apply bg-yellow-100 text-yellow-800;
+}
+.status-5xx {
+  @apply bg-red-100 text-red-800;
+}
+
+.dark .status-2xx {
+  @apply bg-green-900 text-green-300;
+}
+.dark .status-4xx {
+  @apply bg-yellow-900 text-yellow-300;
+}
+.dark .status-5xx {
+  @apply bg-red-900 text-red-300;
+}
+
+.modal-overlay {
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+}
+
+.slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.folder-icon {
+  transition: transform 0.2s ease;
+}
+
+.parameter-item:hover {
+  @apply bg-gray-700 rounded;
+}
+
+.response-item {
+  transition: all 0.2s ease;
+}
+
+.response-item:hover {
+  @apply border-gray-600;
+}
+
+/* Custom scrollbars for webkit browsers */
+.overflow-auto::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.overflow-auto::-webkit-scrollbar-track {
+  @apply bg-gray-800;
+  border-radius: 4px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+  @apply bg-gray-600;
+  border-radius: 4px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+/* Loading states */
+.loading-state {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Form enhancements */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  @apply ring-2 ring-blue-500 border-transparent;
+}
+
+/* Button enhancements */
+button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Code blocks */
+pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+code {
+  font-family: "Monaco", "Menlo", "Consolas", monospace;
+}
+
+/* Sidebar hover effects */
+.endpoint-item:hover .endpoint-method {
+  transform: scale(1.05);
+}
+
+.folder-item:hover .folder-icon {
+  @apply text-blue-400;
+}
+
+/* Toast animations */
+@keyframes toast-slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.toast-enter {
+  animation: toast-slide-in 0.3s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .endpoint-method {
+    font-size: 0.6rem;
+    padding: 0.2rem 0.4rem;
+    min-width: 50px;
+  }
+
+  .grid-cols-2 {
+    @apply grid-cols-1;
+  }
+
+  .lg\\:grid-cols-2 {
+    @apply grid-cols-1;
+  }
+}
+
+/* Print styles */
+@media print {
+  .modal-overlay,
+  button,
+  .sidebar {
+    display: none !important;
+  }
+
+  .main-content {
+    margin: 0 !important;
+    padding: 20px !important;
+  }
+}

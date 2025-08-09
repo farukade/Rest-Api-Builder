@@ -1,0 +1,31 @@
+{
+  "id": "me4p6apmcpn8ufft0a",
+  "name": "Get Users",
+  "method": "GET",
+  "path": "/users",
+  "description": "Retrieve a list of users",
+  "tags": [],
+  "parameters": {
+    "query": [],
+    "path": [],
+    "headers": {}
+  },
+  "requestBody": {
+    "required": false,
+    "contentType": "application/json",
+    "schema": {}
+  },
+  "responses": {
+    "200": {
+      "description": "Success response",
+      "contentType": "application/json",
+      "schema": {}
+    }
+  },
+  "examples": {
+    "request": {},
+    "response": {}
+  },
+  "createdAt": "2025-08-09T20:18:31.735Z",
+  "updatedAt": "2025-08-09T20:18:31.735Z"
+}

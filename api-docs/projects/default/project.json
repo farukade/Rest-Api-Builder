@@ -1,0 +1,9 @@
+{
+  "id": "default",
+  "name": "My API Project",
+  "description": "Default API documentation project",
+  "baseUrl": "https://api.example.com",
+  "version": "1.0.0",
+  "createdAt": "2025-08-09T20:18:31.733Z",
+  "updatedAt": "2025-08-09T20:18:31.735Z"
+}

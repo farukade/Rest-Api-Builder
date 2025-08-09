@@ -1,0 +1,33 @@
+{
+  "id": "me4rh7u8k6viiawn6l",
+  "name": "Create Users",
+  "method": "POST",
+  "path": "/api/users",
+  "description": "Create Users API",
+  "tags": [],
+  "parameters": {
+    "query": [],
+    "path": [],
+    "headers": {}
+  },
+  "requestBody": {
+    "required": false,
+    "contentType": "application/json",
+    "schema": {},
+    "example": {}
+  },
+  "responses": {
+    "200": {
+      "description": "Success response",
+      "contentType": "application/json",
+      "schema": {},
+      "example": {}
+    }
+  },
+  "examples": {
+    "request": {},
+    "response": {}
+  },
+  "createdAt": "2025-08-09T21:23:00.464Z",
+  "updatedAt": "2025-08-09T21:23:45.948Z"
+}
