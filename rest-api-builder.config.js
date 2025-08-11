@@ -4,7 +4,7 @@ module.exports = {
   version: "1.0.0",
   author: "API Team",
   baseUrl: "http://localhost:3000",
-  port: 3000,
+  port: 14345,
   path: "/api-docs",
   allowExternalEdit: false,
   theme: "dark",

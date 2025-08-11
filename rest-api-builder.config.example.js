@@ -9,7 +9,7 @@ module.exports = {
   baseUrl: "https://api.example.com",
 
   // Server Configuration
-  port: 3000,
+  port: 14345,
   path: "/api-docs",
 
   // Access Control
