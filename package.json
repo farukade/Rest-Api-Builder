@@ -1,6 +1,6 @@
 {
-  "name": "@farukade/rest-api-builder",
-  "version": "1.0.0",
+  "name": "rest-api-builder",
+  "version": "1.0.0-alpha.1",
   "description": "Simple file-based REST API documentation builder with testing",
   "main": "lib/index.js",
   "bin": {
@@ -44,15 +44,12 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "repository": {
     "type": "git",
-    "url": "https://github.com/farukade/rest-api-builder.git"
+    "url": "https://github.com/farukade/Rest-Api-Builder.git"
   },
   "bugs": {
-    "url": "https://github.com/farukade/rest-api-builder/issues"
+    "url": "https://github.com/farukade/Rest-Api-Builder.git/issues"
   },
-  "homepage": "https://github.com/farukade/rest-api-builder#readme"
+  "homepage": "https://github.com/farukade/Rest-Api-Builder#readme"
 }
