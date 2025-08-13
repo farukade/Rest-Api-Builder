@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
 /**
- * Example server showing how to use REST API Builder middleware
+ * Example server showing how to use API Docs Creator middleware
  * This replaces the old standalone server.js
  */
 
 const express = require("express");
-const restApiBuilder = require("../../lib/index");
+const apiDocsCreator = require("../../lib/index");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -14,12 +14,12 @@ const PORT = process.env.PORT || 3000;
 // Basic middleware
 app.use(express.json());
 
-// Mount REST API Builder at /api-docs
+// Mount API Docs Creator at /api-docs
 app.use(
   "/api-docs",
-  restApiBuilder({
+  apiDocsCreator({
     name: "Example API",
-    description: "Example API documentation using REST API Builder middleware",
+    description: "Example API documentation using API Docs Creator middleware",
     version: "1.0.0",
     author: "Example Team",
     baseUrl: `http://localhost:${PORT}`,

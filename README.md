@@ -1,25 +1,25 @@
-# REST API Builder
+# API Docs Creator
 
 Express middleware for creating beautiful API documentation and testing interfaces. No setup required - just add it to your Express app!
 
 ## Installation
 
 ```bash
-npm install rest-api-documenter
+npm install api-docs-creator
 ```
 
 ## Quick Start
 
 ```javascript
 const express = require("express");
-const restApiBuilder = require("rest-api-documenter");
+const apiDocsCreator = require("api-docs-creator");
 
 const app = express();
 
-// Add REST API Builder middleware
+// Add API Docs Creator middleware
 app.use(
   "/api-docs",
-  restApiBuilder({
+  apiDocsCreator({
     name: "My API",
     description: "API documentation and testing",
     baseUrl: "https://api.myproject.com",
@@ -46,7 +46,7 @@ app.listen(3000, () => {
 | `version`           | string  | "1.0.0"                                   | API version                     |
 | `author`            | string  | "API Team"                                | Author name                     |
 | `baseUrl`           | string  | "http://localhost:3000"                   | Base API URL for testing        |
-| `path`              | string  | "/rest-builder"                           | Mount path (auto-detected)      |
+| `path`              | string  | "/api-creator"                            | Mount path (auto-detected)      |
 | `allowExternalEdit` | boolean | false                                     | Allow editing from external IPs |
 | `theme`             | string  | "dark"                                    | UI theme                        |
 | `primaryColor`      | string  | "#6B7280"                                 | Primary color                   |
@@ -56,14 +56,14 @@ app.listen(3000, () => {
 
 ```javascript
 const express = require("express");
-const restApiBuilder = require("rest-api-documenter");
+const apiDocsCreator = require("api-docs-creator");
 
 const app = express();
 
 // Advanced configuration
 app.use(
   "/docs",
-  restApiBuilder({
+  apiDocsCreator({
     name: "Advanced API",
     description: "Full featured API documentation",
     version: "2.0.0",
@@ -109,10 +109,10 @@ api-docs/
 
 ## Demo
 
-Run a demo server to see REST API Builder in action:
+Run a demo server to see API Docs Creator in action:
 
 ```bash
-npx rest-api-documenter demo
+npx api-docs-creator demo
 ```
 
 Then visit: http://localhost:3000/api-docs
@@ -121,10 +121,10 @@ Then visit: http://localhost:3000/api-docs
 
 ```bash
 # Show usage examples
-npx rest-api-documenter usage
+npx api-docs-creator usage
 
 # Run demo server
-npx rest-api-documenter demo --port 3000 --path /docs
+npx api-docs-creator demo --port 3000 --path /docs
 ```
 
 ## Examples
@@ -133,12 +133,12 @@ npx rest-api-documenter demo --port 3000 --path /docs
 
 ```javascript
 const express = require("express");
-const restApiBuilder = require("rest-api-documenter");
+const apiDocsCreator = require("api-docs-creator");
 
 const app = express();
 
 // Mount at /api-docs
-app.use("/api-docs", restApiBuilder());
+app.use("/api-docs", apiDocsCreator());
 
 app.listen(3000);
 ```
@@ -151,7 +151,7 @@ const app = express();
 // Public API docs
 app.use(
   "/docs",
-  restApiBuilder({
+  apiDocsCreator({
     name: "Public API",
     allowExternalEdit: false,
   })
@@ -160,7 +160,7 @@ app.use(
 // Internal API docs
 app.use(
   "/internal-docs",
-  restApiBuilder({
+  apiDocsCreator({
     name: "Internal API",
     allowExternalEdit: true,
     dataDir: "./internal-api-docs",
@@ -177,7 +177,7 @@ const app = express();
 app.use(
   "/admin/api-docs",
   authMiddleware,
-  restApiBuilder({
+  apiDocsCreator({
     name: "Admin API",
     allowExternalEdit: true,
   })
