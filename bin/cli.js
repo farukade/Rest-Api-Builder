@@ -3,31 +3,35 @@
 const { Command } = require("commander");
 const chalk = require("chalk");
 const express = require("express");
-const restApiBuilder = require("../lib/index");
+const apiDocsCreator = require("../lib/index");
 
 const program = new Command();
 
 program
-  .name("rest-api-documenter")
-  .description("Simple REST API documentation builder")
+  .name("api-docs-creator")
+  .description("Simple REST API documentation creator and testing interface")
   .version("1.0.0");
 
 program
   .command("demo")
-  .description("Start a demo server with REST API Builder")
+  .description("Start a demo server with API Docs Creator")
   .option("-p, --port <port>", "Port to run on", "3000")
-  .option("--path <path>", "Mount path for the API builder", "/api-docs")
+  .option(
+    "--path <path>",
+    "Mount path for the API documentation creator",
+    "/api-docs"
+  )
   .action(async (options) => {
     try {
       const app = express();
       const port = parseInt(options.port);
 
-      // Mount the REST API Builder middleware
+      // Mount the API Docs Creator middleware
       app.use(
         options.path,
-        restApiBuilder({
+        apiDocsCreator({
           name: "Demo API Documentation",
-          description: "Demo of REST API Builder middleware",
+          description: "Demo of API Docs Creator middleware",
           version: "1.0.0",
           author: "Demo Team",
           baseUrl: `http://localhost:${port}`,
@@ -70,17 +74,17 @@ program
   .command("usage")
   .description("Show usage examples")
   .action(() => {
-    console.log(chalk.blue("📚 REST API Builder - Usage Examples\n"));
+    console.log(chalk.blue("📚 API Docs Creator - Usage Examples\n"));
 
     console.log(chalk.green("Basic Express Integration:"));
     console.log(`
 const express = require('express');
-const restApiBuilder = require('rest-api-documenter');
+const apiDocsCreator = require('api-docs-creator');
 
 const app = express();
 
-// Mount REST API Builder at /api-docs
-app.use('/api-docs', restApiBuilder({
+// Mount API Docs Creator at /api-docs
+app.use('/api-docs', apiDocsCreator({
   name: 'My API',
   description: 'API documentation and testing',
   baseUrl: 'https://api.myproject.com'
@@ -91,7 +95,7 @@ app.listen(3000);
 
     console.log(chalk.green("Advanced Configuration:"));
     console.log(`
-app.use('/docs', restApiBuilder({
+app.use('/docs', apiDocsCreator({
   name: 'Advanced API',
   description: 'Full featured API documentation',
   version: '2.0.0',

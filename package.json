@@ -1,10 +1,10 @@
 {
-  "name": "rest-api-documenter",
+  "name": "api-docs-creator",
   "version": "1.0.0-alpha.1",
   "description": "Simple file-based REST API documentation builder with testing",
   "main": "lib/index.js",
   "bin": {
-    "rest-api-documenter": "bin/cli.js"
+    "api-docs-creator": "bin/cli.js"
   },
   "files": [
     "lib/",
@@ -27,7 +27,9 @@
     "middleware",
     "testing",
     "swagger",
-    "docs"
+    "docs",
+    "builder",
+    "creator"
   ],
   "author": "Farukade",
   "license": "MIT",
@@ -46,10 +48,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/farukade/rest-api-documenter.git"
+    "url": "https://github.com/farukade/api-docs-creator.git"
   },
   "bugs": {
-    "url": "https://github.com/farukade/rest-api-documenter.git/issues"
+    "url": "https://github.com/farukade/api-docs-creator.git/issues"
   },
-  "homepage": "https://github.com/farukade/rest-api-documenter#readme"
+  "homepage": "https://github.com/farukade/api-docs-creator#readme"
 }
