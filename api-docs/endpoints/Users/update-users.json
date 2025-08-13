@@ -1,9 +1,9 @@
 {
-  "id": "me4p6apmcpn8ufft0a",
-  "name": "Get Users",
-  "method": "GET",
-  "path": "/api/users",
-  "description": "Retrieve a list of users",
+  "id": "meagy2fr3ypv1ppqhgy",
+  "name": "Update Users",
+  "method": "PUT",
+  "path": "/api/users/5",
+  "description": "Update users endpoint",
   "tags": [],
   "parameters": {
     "query": [],
@@ -13,19 +13,21 @@
   "requestBody": {
     "required": false,
     "contentType": "application/json",
-    "schema": {}
+    "schema": {},
+    "example": {}
   },
   "responses": {
     "200": {
       "description": "Success response",
       "contentType": "application/json",
-      "schema": {}
+      "schema": {},
+      "example": {}
     }
   },
   "examples": {
     "request": {},
     "response": {}
   },
-  "createdAt": "2025-08-09T20:18:31.735Z",
-  "updatedAt": "2025-08-09T20:18:31.735Z"
+  "createdAt": "2025-08-13T21:14:47.895Z",
+  "updatedAt": "2025-08-13T21:14:47.895Z"
 }

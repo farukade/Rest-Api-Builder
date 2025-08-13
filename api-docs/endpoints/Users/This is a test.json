@@ -1,0 +1,48 @@
+{
+  "id": "meah5bf2h2873gg4fh",
+  "name": "test",
+  "method": "GET",
+  "path": "/test-api",
+  "description": "",
+  "tags": [],
+  "parameters": {
+    "query": [
+      {
+        "name": "",
+        "type": "string",
+        "description": "",
+        "required": false
+      },
+      {
+        "name": "",
+        "type": "string",
+        "description": "",
+        "required": false
+      }
+    ],
+    "path": [],
+    "headers": {}
+  },
+  "requestBody": {
+    "required": false,
+    "contentType": "application/json",
+    "schema": {},
+    "example": {}
+  },
+  "responses": {
+    "200": {
+      "description": "Success response",
+      "contentType": "application/json",
+      "schema": {},
+      "example": {
+        "name": "Test"
+      }
+    }
+  },
+  "examples": {
+    "request": {},
+    "response": {}
+  },
+  "createdAt": "2025-08-13T21:20:26.126Z",
+  "updatedAt": "2025-08-13T21:21:57.347Z"
+}

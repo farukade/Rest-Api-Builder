@@ -7,34 +7,52 @@
     "rest-api-builder": "bin/cli.js"
   },
   "files": [
-    "bin/",
     "lib/",
-    "public/"
+    "public/",
+    "bin/",
+    "README.md"
   ],
   "scripts": {
-    "start": "node bin/cli.js start",
+    "dev": "nodemon examples/express/server.js",
+    "start": "node examples/express/server.js",
+    "demo": "node bin/cli.js demo",
+    "usage": "node bin/cli.js usage",
     "test": "echo 'No tests yet' && exit 0"
   },
   "keywords": [
     "api",
     "documentation",
     "rest",
+    "express",
+    "middleware",
     "testing",
-    "openapi",
-    "swagger"
+    "swagger",
+    "docs"
   ],
-  "author": "Your Name",
+  "author": "Farukade",
   "license": "MIT",
   "dependencies": {
     "express": "^4.18.2",
     "cors": "^2.8.5",
     "commander": "^11.0.0",
-    "chalk": "^4.1.2"
+    "chalk": "^4.1.2",
+    "node-fetch": "^3.3.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.20"
   },
   "engines": {
     "node": ">=14.0.0"
   },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/farukade/rest-api-builder.git"
+  },
+  "bugs": {
+    "url": "https://github.com/farukade/rest-api-builder/issues"
+  },
+  "homepage": "https://github.com/farukade/rest-api-builder#readme"
 }

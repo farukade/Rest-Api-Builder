@@ -1,0 +1,129 @@
+{
+  "id": "meaewmb48oqsfxbo7yd",
+  "name": "Get Users",
+  "method": "GET",
+  "path": "/api/users",
+  "description": "Retrieve a list of all users",
+  "tags": ["users"],
+  "parameters": {
+    "query": [
+      {
+        "name": "limit",
+        "type": "integer",
+        "description": "Number of users to return",
+        "required": false,
+        "example": 10
+      },
+      {
+        "name": "page",
+        "type": "integer",
+        "description": "Page number for pagination",
+        "required": false,
+        "example": 1
+      }
+    ],
+    "path": [],
+    "headers": {
+      "Authorization": "Bearer your-token"
+    }
+  },
+  "requestBody": {
+    "required": false,
+    "contentType": "application/json",
+    "schema": {},
+    "example": {}
+  },
+  "responses": {
+    "200": {
+      "description": "Successful response",
+      "contentType": "application/json",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "users": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "type": "string"
+                },
+                "name": {
+                  "type": "string"
+                },
+                "email": {
+                  "type": "string"
+                }
+              }
+            }
+          },
+          "total": {
+            "type": "integer"
+          },
+          "page": {
+            "type": "integer"
+          }
+        }
+      },
+      "example": {
+        "users": [
+          {
+            "id": "1",
+            "name": "John Doe",
+            "email": "john@example.com"
+          },
+          {
+            "id": "2",
+            "name": "Jane Smith",
+            "email": "jane@example.com"
+          }
+        ],
+        "total": 50,
+        "page": 1
+      }
+    },
+    "401": {
+      "description": "Unauthorized",
+      "contentType": "application/json",
+      "schema": {
+        "type": "object",
+        "properties": {
+          "error": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          }
+        }
+      },
+      "example": {
+        "error": "Unauthorized",
+        "message": "Invalid or missing authentication token"
+      }
+    }
+  },
+  "examples": {
+    "request": {
+      "headers": {
+        "Authorization": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+      },
+      "query": {
+        "limit": 10,
+        "page": 1
+      }
+    },
+    "response": {
+      "users": [
+        {
+          "id": "1",
+          "name": "John Doe",
+          "email": "john@example.com"
+        }
+      ],
+      "total": 50,
+      "page": 1
+    }
+  },
+  "createdAt": "2025-08-13T20:17:41.104Z",
+  "updatedAt": "2025-08-13T20:17:41.105Z"
+}

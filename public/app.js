@@ -4,9 +4,19 @@ let allEndpoints = [];
 let apiStructure = [];
 let currentEndpoint = null;
 let isEditing = false;
+let basePath = "";
 
 // Initialize app
 document.addEventListener("DOMContentLoaded", async () => {
+  // Detect the base path from current URL
+  const path = window.location.pathname;
+  const segments = path.split("/").filter(Boolean);
+
+  // If we're not at root, assume the first segment is our base path
+  if (segments.length > 0 && !path.endsWith(".html")) {
+    basePath = "/" + segments[0];
+  }
+
   await loadConfig();
   await loadApiStructure();
   showWelcome();
@@ -15,7 +25,9 @@ document.addEventListener("DOMContentLoaded", async () => {
 // API helper functions
 async function apiCall(endpoint, options = {}) {
   try {
-    const response = await fetch(endpoint, {
+    // Make API calls relative to the base path
+    const url = basePath + endpoint;
+    const response = await fetch(url, {
       headers: {
         "Content-Type": "application/json",
         ...options.headers,
@@ -39,6 +51,10 @@ async function loadConfig() {
   const result = await apiCall("/api/config");
   if (result.success) {
     currentConfig = result.data;
+    // Update basePath if provided in config
+    if (currentConfig.mountPath) {
+      basePath = currentConfig.mountPath;
+    }
     updateUI();
   }
 }
@@ -122,12 +138,9 @@ function renderApiStructure() {
                         ${
                           currentConfig?.canEdit
                             ? `
-                            <button onclick="event.stopPropagation(); addToFolder('${item.path}')" 
-                                    class="opacity-0 group-hover:opacity-100 p-1 text-gray-400 hover:text-white" title="Add endpoint">
-                                <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <svg onclick="addToFolder('${item.path}')" class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
                                 </svg>
-                            </button>
                         `
                             : ""
                         }
@@ -828,7 +841,68 @@ function cancelEdit() {
   renderEndpointView();
 }
 
-// Show create endpoint modal
+// Add endpoint to specific folder (called from folder context menu)
+function addToFolder(folderPath) {
+  if (!currentConfig?.canEdit) return;
+  showCreateEndpoint(folderPath);
+}
+
+// Helper function to get folder structure for dropdowns
+function getFolderStructure() {
+  function getAllFolders(items, currentPath = "") {
+    let folders = [];
+
+    items.forEach((item) => {
+      if (item.type === "folder") {
+        const folderPath = currentPath
+          ? `${currentPath}/${item.name}`
+          : item.name;
+        folders.push({
+          name: item.name,
+          path: folderPath,
+          level: currentPath.split("/").filter(Boolean).length,
+          fullPath: folderPath,
+        });
+
+        // Recursively get subfolders
+        if (item.children && item.children.length > 0) {
+          folders = folders.concat(getAllFolders(item.children, folderPath));
+        }
+      }
+    });
+
+    return folders;
+  }
+
+  return getAllFolders(apiStructure);
+}
+
+// Helper function to build folder dropdown options
+function buildFolderOptions(selectedFolder = "", includeNested = true) {
+  let options = '<option value="">Root Level</option>';
+
+  const folders = includeNested
+    ? getFolderStructure()
+    : apiStructure.filter((item) => item.type === "folder");
+
+  if (includeNested) {
+    // For nested structure with indentation
+    folders.forEach((folder) => {
+      const indent = "  ".repeat(folder.level);
+      const selected = folder.path === selectedFolder ? "selected" : "";
+      options += `<option value="${folder.path}" ${selected}>${indent}${folder.name}</option>`;
+    });
+  } else {
+    // For root-level only
+    folders.forEach((folder) => {
+      const selected = folder.name === selectedFolder ? "selected" : "";
+      options += `<option value="${folder.name}" ${selected}>${folder.name}</option>`;
+    });
+  }
+
+  return options;
+}
+
 function showCreateEndpoint(folder = "") {
   if (!currentConfig?.canEdit) return;
 
@@ -868,14 +942,18 @@ function showCreateEndpoint(folder = "") {
             
             <div class="grid grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium mb-2">Folder (optional)</label>
-                    <input type="text" name="folder" value="${folder}" placeholder="users, auth, etc."
-                           class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <label class="block text-sm font-medium mb-2">Folder</label>
+                    <select name="folder" 
+                            class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                        ${buildFolderOptions(folder, true)}
+                    </select>
+                    <p class="text-xs text-gray-400 mt-1">Choose a folder to organize your endpoint</p>
                 </div>
                 <div>
                     <label class="block text-sm font-medium mb-2">Filename</label>
                     <input type="text" name="filename" required placeholder="endpoint-name"
                            class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    <p class="text-xs text-gray-400 mt-1">Used for the JSON file name</p>
                 </div>
             </div>
             
@@ -915,7 +993,6 @@ async function createEndpoint(event) {
   }
 }
 
-// Show create folder modal
 function showCreateFolder() {
   if (!currentConfig?.canEdit) return;
 
@@ -930,9 +1007,12 @@ function showCreateFolder() {
             </div>
             
             <div>
-                <label class="block text-sm font-medium mb-2">Parent Folder (optional)</label>
-                <input type="text" name="parent" placeholder="Leave empty for root level"
-                       class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                <label class="block text-sm font-medium mb-2">Parent Folder</label>
+                <select name="parent" 
+                        class="w-full px-3 py-2 border border-gray-600 rounded-md bg-gray-700 text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent">
+                    ${buildFolderOptions("", false)}
+                </select>
+                <p class="text-xs text-gray-400 mt-1">Select a parent folder or leave as "Root Level" to create at the top level</p>
             </div>
             
             <div class="flex justify-end space-x-3 pt-4">
