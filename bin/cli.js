@@ -8,7 +8,7 @@ const restApiBuilder = require("../lib/index");
 const program = new Command();
 
 program
-  .name("rest-api-builder")
+  .name("rest-api-documenter")
   .description("Simple REST API documentation builder")
   .version("1.0.0");
 
@@ -75,7 +75,7 @@ program
     console.log(chalk.green("Basic Express Integration:"));
     console.log(`
 const express = require('express');
-const restApiBuilder = require('rest-api-builder');
+const restApiBuilder = require('rest-api-documenter');
 
 const app = express();
 

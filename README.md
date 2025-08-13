@@ -5,14 +5,14 @@ Express middleware for creating beautiful API documentation and testing interfac
 ## Installation
 
 ```bash
-npm install rest-api-builder
+npm install rest-api-documenter
 ```
 
 ## Quick Start
 
 ```javascript
 const express = require("express");
-const restApiBuilder = require("rest-api-builder");
+const restApiBuilder = require("rest-api-documenter");
 
 const app = express();
 
@@ -56,7 +56,7 @@ app.listen(3000, () => {
 
 ```javascript
 const express = require("express");
-const restApiBuilder = require("rest-api-builder");
+const restApiBuilder = require("rest-api-documenter");
 
 const app = express();
 
@@ -112,7 +112,7 @@ api-docs/
 Run a demo server to see REST API Builder in action:
 
 ```bash
-npx rest-api-builder demo
+npx rest-api-documenter demo
 ```
 
 Then visit: http://localhost:3000/api-docs
@@ -121,10 +121,10 @@ Then visit: http://localhost:3000/api-docs
 
 ```bash
 # Show usage examples
-npx rest-api-builder usage
+npx rest-api-documenter usage
 
 # Run demo server
-npx rest-api-builder demo --port 3000 --path /docs
+npx rest-api-documenter demo --port 3000 --path /docs
 ```
 
 ## Examples
@@ -133,7 +133,7 @@ npx rest-api-builder demo --port 3000 --path /docs
 
 ```javascript
 const express = require("express");
-const restApiBuilder = require("rest-api-builder");
+const restApiBuilder = require("rest-api-documenter");
 
 const app = express();
 

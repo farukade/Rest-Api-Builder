@@ -1,7 +1,7 @@
 // api-docs.module.ts
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import * as restApiBuilder from 'rest-api-builder';
+import * as restApiBuilder from 'rest-api-documenter';
 
 @Module({
   imports: [ConfigModule],

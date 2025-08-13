@@ -1,10 +1,10 @@
 {
-  "name": "rest-api-builder",
+  "name": "rest-api-documenter",
   "version": "1.0.0-alpha.1",
   "description": "Simple file-based REST API documentation builder with testing",
   "main": "lib/index.js",
   "bin": {
-    "rest-api-builder": "bin/cli.js"
+    "rest-api-documenter": "bin/cli.js"
   },
   "files": [
     "lib/",
@@ -46,10 +46,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/farukade/Rest-Api-Builder.git"
+    "url": "https://github.com/farukade/rest-api-documenter.git"
   },
   "bugs": {
-    "url": "https://github.com/farukade/Rest-Api-Builder.git/issues"
+    "url": "https://github.com/farukade/rest-api-documenter.git/issues"
   },
-  "homepage": "https://github.com/farukade/Rest-Api-Builder#readme"
+  "homepage": "https://github.com/farukade/rest-api-documenter#readme"
 }
