@@ -1,0 +1,123 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom scrollbars for webkit browsers */
+.overflow-auto::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.overflow-auto::-webkit-scrollbar-track {
+  @apply bg-gray-800;
+  border-radius: 4px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb {
+  @apply bg-gray-600;
+  border-radius: 4px;
+}
+
+.overflow-auto::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}
+
+/* Code blocks */
+pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+code {
+  font-family: "Monaco", "Menlo", "Consolas", monospace;
+}
+
+/* Focus styles for form inputs */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+  @apply ring-2 ring-blue-500 border-transparent;
+}
+
+/* Button disabled state */
+button:disabled {
+  @apply opacity-50 cursor-not-allowed;
+}
+
+/* Loading state */
+.loading-state {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Animation classes for Tailwind */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-slide-in {
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out;
+}
+
+/* Toast animations */
+@keyframes toast-slide-in {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+.animate-toast-in {
+  animation: toast-slide-in 0.3s ease-out;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .grid-cols-2 {
+    @apply grid-cols-1;
+  }
+
+  .lg\:grid-cols-2 {
+    @apply grid-cols-1;
+  }
+}
+
+/* Print styles */
+@media print {
+  .modal-overlay,
+  button,
+  .sidebar {
+    display: none !important;
+  }
+
+  .main-content {
+    margin: 0 !important;
+    padding: 20px !important;
+  }
+}

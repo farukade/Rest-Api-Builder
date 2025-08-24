@@ -13,11 +13,13 @@
     "README.md"
   ],
   "scripts": {
-    "dev": "nodemon examples/express/server.js",
+    "dev": "concurrently \"vite --port 8080\" \"nodemon examples/express/server.js\"",
     "start": "node examples/express/server.js",
     "demo": "node bin/cli.js demo",
     "usage": "node bin/cli.js usage",
-    "test": "echo 'No tests yet' && exit 0"
+    "test": "echo 'No tests yet' && exit 0",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "keywords": [
     "api",
