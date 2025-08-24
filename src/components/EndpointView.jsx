@@ -9,10 +9,20 @@ const EndpointView = () => {
   const { currentEndpoint, isEditing, currentConfig } = state;
 
   const [editData, setEditData] = useState(null);
+  const [activeField, setActiveField] = useState(null); // Track which field is being edited
+  const [fieldValues, setFieldValues] = useState({}); // Store temporary values for individual fields
 
   React.useEffect(() => {
-    if (currentEndpoint && isEditing) {
+    if (currentEndpoint && isEditing && !editData) {
+      // Initialize editData immediately when entering edit mode
       setEditData({ ...currentEndpoint });
+      setFieldValues({}); // Reset field values when entering edit mode
+      setActiveField(null); // Reset active field
+    } else if (!isEditing && editData) {
+      // Reset edit states when exiting edit mode
+      setEditData(null);
+      setActiveField(null);
+      setFieldValues({});
     }
   }, [currentEndpoint, isEditing]);
 
@@ -24,7 +34,64 @@ const EndpointView = () => {
     );
   }
 
-  const endpoint = isEditing ? editData : currentEndpoint;
+  const endpoint = isEditing ? editData || currentEndpoint : currentEndpoint;
+
+  // Handle clicking on an editable field
+  const handleFieldClick = (fieldPath, currentValue) => {
+    if (!isEditing) return;
+
+    setActiveField(fieldPath);
+    setFieldValues({
+      ...fieldValues,
+      [fieldPath]: currentValue,
+    });
+  };
+
+  // Handle saving a specific field
+  const handleFieldSave = (fieldPath) => {
+    const value = fieldValues[fieldPath];
+
+    // Validate JSON fields if needed
+    if (fieldPath.includes("headers") || fieldPath.includes("example")) {
+      try {
+        if (typeof value === "string" && value.trim()) {
+          JSON.parse(value);
+        }
+      } catch (error) {
+        actions.addToast({
+          message: "Invalid JSON format",
+          type: "error",
+        });
+        return;
+      }
+    }
+
+    updateNestedEditData(fieldPath, value);
+    setActiveField(null);
+    setFieldValues({
+      ...fieldValues,
+      [fieldPath]: undefined,
+    });
+  };
+
+  // Handle canceling field edit
+  const handleFieldCancel = (fieldPath) => {
+    setActiveField(null);
+    setFieldValues({
+      ...fieldValues,
+      [fieldPath]: undefined,
+    });
+  };
+
+  // Handle key press for field editing
+  const handleFieldKeyPress = (e, fieldPath) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      handleFieldSave(fieldPath);
+    } else if (e.key === "Escape") {
+      handleFieldCancel(fieldPath);
+    }
+  };
 
   const handleSave = async () => {
     try {
@@ -58,6 +125,8 @@ const EndpointView = () => {
       const success = await actions.saveEndpoint(editData);
       if (success) {
         setEditData(null);
+        setActiveField(null);
+        setFieldValues({});
       }
     } catch (error) {
       actions.addToast({
@@ -70,6 +139,8 @@ const EndpointView = () => {
   const handleCancel = () => {
     actions.setEditing(false);
     setEditData(null);
+    setActiveField(null);
+    setFieldValues({});
   };
 
   const handleTestEndpoint = () => {
@@ -94,7 +165,9 @@ const EndpointView = () => {
 
   const updateNestedEditData = (path, value) => {
     setEditData((prev) => {
-      const newData = { ...prev };
+      // Initialize editData if it doesn't exist
+      const baseData = prev || { ...currentEndpoint };
+      const newData = { ...baseData };
       const keys = path.split(".");
       let current = newData;
 
@@ -107,6 +180,226 @@ const EndpointView = () => {
       return newData;
     });
   };
+
+  // Render an editable field
+  const renderEditableField = (
+    fieldPath,
+    currentValue,
+    placeholder = "",
+    multiline = false,
+    type = "text"
+  ) => {
+    const isActive = activeField === fieldPath;
+    const displayValue = isActive
+      ? fieldValues[fieldPath] ?? currentValue
+      : currentValue;
+
+    if (!isEditing) {
+      return (
+        <span className="text-gray-300">
+          {currentValue || <span className="text-gray-500">{placeholder}</span>}
+        </span>
+      );
+    }
+
+    if (isActive) {
+      const commonProps = {
+        value: displayValue || "",
+        onChange: (e) =>
+          setFieldValues({
+            ...fieldValues,
+            [fieldPath]: e.target.value,
+          }),
+        onKeyDown: (e) => handleFieldKeyPress(e, fieldPath),
+        className:
+          "bg-gray-700 border border-blue-500 rounded px-2 py-1 text-sm w-full focus:outline-none focus:ring-1 focus:ring-blue-500",
+        autoFocus: true,
+      };
+
+      if (multiline) {
+        return (
+          <div className="relative w-full">
+            <textarea
+              {...commonProps}
+              rows={type === "json" ? 6 : 3}
+              className={`${commonProps.className} font-mono resize-none`}
+            />
+            <div className="flex justify-end space-x-1 mt-1">
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleFieldSave(fieldPath);
+                }}
+                className="px-2 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700"
+              >
+                ✓
+              </button>
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  handleFieldCancel(fieldPath);
+                }}
+                className="px-2 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+        );
+      }
+
+      return (
+        <div className="relative w-full">
+          <input {...commonProps} type={type} />
+          <div className="flex justify-end space-x-1 mt-1">
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFieldSave(fieldPath);
+              }}
+              className="px-2 py-1 bg-green-600 text-white text-xs rounded hover:bg-green-700"
+            >
+              ✓
+            </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                handleFieldCancel(fieldPath);
+              }}
+              className="px-2 py-1 bg-gray-600 text-white text-xs rounded hover:bg-gray-700"
+            >
+              ✕
+            </button>
+          </div>
+        </div>
+      );
+    }
+
+    // When in edit mode but field is not active - show clickable field
+    return (
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          handleFieldClick(fieldPath, currentValue);
+        }}
+        className="cursor-pointer hover:bg-gray-700 rounded px-2 py-1 border border-transparent hover:border-gray-600 transition-colors group min-h-[32px] flex items-center"
+        title="Click to edit"
+      >
+        <span className={currentValue ? "text-white" : "text-gray-400"}>
+          {currentValue || placeholder}
+        </span>
+        <svg
+          className="w-3 h-3 ml-2 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+          />
+        </svg>
+      </div>
+    );
+  };
+
+  // Render an editable select field
+  const renderEditableSelect = (
+    fieldPath,
+    currentValue,
+    options,
+    placeholder = ""
+  ) => {
+    const isActive = activeField === fieldPath;
+    const displayValue = isActive
+      ? fieldValues[fieldPath] ?? currentValue
+      : currentValue;
+
+    if (!isEditing) {
+      return (
+        <span className="text-gray-300">
+          {currentValue || <span className="text-gray-500">{placeholder}</span>}
+        </span>
+      );
+    }
+
+    if (isActive) {
+      return (
+        <div className="relative w-full">
+          <select
+            value={displayValue || ""}
+            onChange={(e) => {
+              setFieldValues({
+                ...fieldValues,
+                [fieldPath]: e.target.value,
+              });
+              // Auto-save select fields since they're discrete choices
+              setTimeout(() => handleFieldSave(fieldPath), 0);
+            }}
+            className="bg-gray-700 border border-blue-500 rounded px-2 py-1 text-sm w-full focus:outline-none focus:ring-1 focus:ring-blue-500"
+            autoFocus
+          >
+            {options.map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+        </div>
+      );
+    }
+
+    return (
+      <div
+        onClick={(e) => {
+          e.stopPropagation();
+          handleFieldClick(fieldPath, currentValue);
+        }}
+        className="cursor-pointer hover:bg-gray-700 rounded px-2 py-1 border border-transparent hover:border-gray-600 transition-colors group min-h-[32px] flex items-center"
+        title="Click to edit"
+      >
+        <span className={currentValue ? "text-white" : "text-gray-400"}>
+          {currentValue || placeholder}
+        </span>
+        <svg
+          className="w-3 h-3 ml-2 text-gray-500 opacity-0 group-hover:opacity-100 transition-opacity"
+          fill="none"
+          stroke="currentColor"
+          viewBox="0 0 24 24"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            strokeWidth="2"
+            d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+          />
+        </svg>
+      </div>
+    );
+  };
+
+  const methodOptions = [
+    { value: "GET", label: "GET" },
+    { value: "POST", label: "POST" },
+    { value: "PUT", label: "PUT" },
+    { value: "PATCH", label: "PATCH" },
+    { value: "DELETE", label: "DELETE" },
+  ];
+
+  const contentTypeOptions = [
+    { value: "application/json", label: "application/json" },
+    {
+      value: "application/x-www-form-urlencoded",
+      label: "application/x-www-form-urlencoded",
+    },
+    { value: "multipart/form-data", label: "multipart/form-data" },
+  ];
 
   return (
     <div className="h-full flex flex-col">
@@ -138,16 +431,9 @@ const EndpointView = () => {
             >
               {endpoint.method}
             </span>
-            {isEditing ? (
-              <input
-                type="text"
-                value={editData?.name || ""}
-                onChange={(e) => updateEditData("name", e.target.value)}
-                className="text-2xl font-bold bg-transparent border-b border-gray-600 focus:border-blue-500 outline-none"
-              />
-            ) : (
-              <h1 className="text-2xl font-bold">{endpoint.name}</h1>
-            )}
+            <div className="text-2xl font-bold min-w-0 flex-1">
+              {renderEditableField("name", endpoint.name, "Click to edit name")}
+            </div>
           </div>
           <div className="flex space-x-2">
             {isEditing ? (
@@ -196,29 +482,27 @@ const EndpointView = () => {
         {isEditing && (
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
-              <label className="block text-sm font-medium mb-1">
+              <label className="block text-sm font-medium mb-2">
                 HTTP Method
               </label>
-              <select
-                value={editData?.method || "GET"}
-                onChange={(e) => updateEditData("method", e.target.value)}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md"
-              >
-                <option value="GET">GET</option>
-                <option value="POST">POST</option>
-                <option value="PUT">PUT</option>
-                <option value="PATCH">PATCH</option>
-                <option value="DELETE">DELETE</option>
-              </select>
+              <div>
+                {renderEditableSelect(
+                  "method",
+                  endpoint.method || "GET",
+                  methodOptions,
+                  "Select method"
+                )}
+              </div>
             </div>
             <div>
-              <label className="block text-sm font-medium mb-1">Path</label>
-              <input
-                type="text"
-                value={editData?.path || ""}
-                onChange={(e) => updateEditData("path", e.target.value)}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md"
-              />
+              <label className="block text-sm font-medium mb-2">Path</label>
+              <div>
+                {renderEditableField(
+                  "path",
+                  endpoint.path,
+                  "Click to edit path"
+                )}
+              </div>
             </div>
           </div>
         )}
@@ -226,15 +510,17 @@ const EndpointView = () => {
         <div>
           {isEditing ? (
             <>
-              <label className="block text-sm font-medium mb-1">
+              <label className="block text-sm font-medium mb-2">
                 Description
               </label>
-              <textarea
-                rows="2"
-                value={editData?.description || ""}
-                onChange={(e) => updateEditData("description", e.target.value)}
-                className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-md"
-              />
+              <div>
+                {renderEditableField(
+                  "description",
+                  endpoint.description,
+                  "Click to edit description",
+                  true
+                )}
+              </div>
             </>
           ) : (
             endpoint.description && (
@@ -262,52 +548,34 @@ const EndpointView = () => {
                 {isEditing ? (
                   <div className="space-y-3">
                     <div>
-                      <label className="block text-sm mb-1">Content Type</label>
-                      <select
-                        value={
-                          editData?.requestBody?.contentType ||
-                          "application/json"
-                        }
-                        onChange={(e) =>
-                          updateNestedEditData(
-                            "requestBody.contentType",
-                            e.target.value
-                          )
-                        }
-                        className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded text-sm"
-                      >
-                        <option value="application/json">
-                          application/json
-                        </option>
-                        <option value="application/x-www-form-urlencoded">
-                          application/x-www-form-urlencoded
-                        </option>
-                        <option value="multipart/form-data">
-                          multipart/form-data
-                        </option>
-                      </select>
+                      <label className="block text-sm mb-2">Content Type</label>
+                      <div>
+                        {renderEditableSelect(
+                          "requestBody.contentType",
+                          endpoint.requestBody?.contentType ||
+                            "application/json",
+                          contentTypeOptions,
+                          "Select content type"
+                        )}
+                      </div>
                     </div>
                     <div>
-                      <label className="block text-sm mb-1">Example</label>
-                      <textarea
-                        rows="6"
-                        value={
-                          typeof editData?.requestBody?.example === "string"
-                            ? editData.requestBody.example
+                      <label className="block text-sm mb-2">Example</label>
+                      <div>
+                        {renderEditableField(
+                          "requestBody.example",
+                          typeof endpoint.requestBody?.example === "string"
+                            ? endpoint.requestBody.example
                             : JSON.stringify(
-                                editData?.requestBody?.example || {},
+                                endpoint.requestBody?.example || {},
                                 null,
                                 2
-                              )
-                        }
-                        onChange={(e) =>
-                          updateNestedEditData(
-                            "requestBody.example",
-                            e.target.value
-                          )
-                        }
-                        className="w-full px-3 py-2 bg-gray-900 border border-gray-600 rounded font-mono text-sm"
-                      />
+                              ),
+                          "Click to edit request body example",
+                          true,
+                          "json"
+                        )}
+                      </div>
                     </div>
                   </div>
                 ) : endpoint.requestBody?.example &&

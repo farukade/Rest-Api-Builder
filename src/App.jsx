@@ -139,12 +139,31 @@ export function AppProvider({ children }) {
   const editEndpoint = async (endpointId) => {
     if (!state.currentConfig?.canEdit) return;
 
-    const result = await apiCall(`/api/endpoints/${endpointId}`);
-    if (result.success) {
-      actions.setCurrentEndpoint(result.data);
+    // If we already have the endpoint loaded and it's the same one, just enable editing
+    if (state.currentEndpoint?.id === endpointId) {
       actions.setEditing(true);
-    } else {
-      actions.addToast({ message: "Failed to load endpoint", type: "error" });
+      return;
+    }
+
+    // Otherwise, load the endpoint data first
+    try {
+      const result = await apiCall(`/api/endpoints/${endpointId}`);
+      if (result.success && result.data) {
+        actions.setCurrentEndpoint(result.data);
+        actions.setEditing(true);
+      } else {
+        console.error("Failed to load endpoint for editing:", result.error);
+        actions.addToast({
+          message: result.error || "Failed to load endpoint for editing",
+          type: "error",
+        });
+      }
+    } catch (error) {
+      console.error("Error loading endpoint for editing:", error);
+      actions.addToast({
+        message: `Error loading endpoint: ${error.message}`,
+        type: "error",
+      });
     }
   };
 
@@ -175,23 +194,33 @@ export function AppProvider({ children }) {
   };
 
   const saveEndpoint = async (updatedEndpoint) => {
-    const result = await apiCall(`/api/endpoints/${updatedEndpoint.id}`, {
-      method: "PUT",
-      body: JSON.stringify(updatedEndpoint),
-    });
-
-    if (result.success) {
-      actions.setCurrentEndpoint(result.data);
-      actions.setEditing(false);
-      actions.addToast({
-        message: "Endpoint saved successfully!",
-        type: "success",
+    try {
+      const result = await apiCall(`/api/endpoints/${updatedEndpoint.id}`, {
+        method: "PUT",
+        body: JSON.stringify(updatedEndpoint),
       });
-      await loadApiStructure();
-      return true;
-    } else {
+
+      if (result.success && result.data) {
+        actions.setCurrentEndpoint(result.data);
+        actions.setEditing(false);
+        actions.addToast({
+          message: "Endpoint saved successfully!",
+          type: "success",
+        });
+        await loadApiStructure();
+        return true;
+      } else {
+        console.error("Failed to save endpoint:", result.error);
+        actions.addToast({
+          message: result.error || "Failed to save endpoint",
+          type: "error",
+        });
+        return false;
+      }
+    } catch (error) {
+      console.error("Error saving endpoint:", error);
       actions.addToast({
-        message: result.error || "Failed to save endpoint",
+        message: `Error saving endpoint: ${error.message}`,
         type: "error",
       });
       return false;

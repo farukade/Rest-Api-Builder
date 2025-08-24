@@ -1,12 +1,19 @@
 {
   "id": "meagy2fr3ypv1ppqhgy",
-  "name": "Update Users",
+  "name": "Update Staff",
   "method": "PUT",
   "path": "/api/users/5",
   "description": "Update users endpoint",
   "tags": [],
   "parameters": {
-    "query": [],
+    "query": [
+      {
+        "name": "page",
+        "type": "integer",
+        "description": "",
+        "required": true
+      }
+    ],
     "path": [],
     "headers": {}
   },
@@ -14,7 +21,7 @@
     "required": false,
     "contentType": "application/json",
     "schema": {},
-    "example": {}
+    "example": "{}"
   },
   "responses": {
     "200": {
@@ -29,5 +36,5 @@
     "response": {}
   },
   "createdAt": "2025-08-13T21:14:47.895Z",
-  "updatedAt": "2025-08-13T21:14:47.895Z"
+  "updatedAt": "2025-08-24T14:25:57.474Z"
 }
