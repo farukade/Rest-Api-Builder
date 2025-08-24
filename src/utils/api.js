@@ -1,9 +1,7 @@
 // API Configuration
 export const API_CONFIG = {
   BASE_URL:
-    process.env.NODE_ENV === "development"
-      ? "http://localhost:3000"
-      : "http://localhost:3000",
+    process.env.NODE_ENV === "development" ? "http://localhost:3000" : "",
   ENDPOINTS: {
     CONFIG: "/config",
     STRUCTURE: "/structure",
