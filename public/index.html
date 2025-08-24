@@ -2,93 +2,15 @@
 <html lang="en" class="dark">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>API Docs Creator</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'class',
-      theme: {
-        extend: {
-          colors: {
-            primary: '#6B7280'
-          }
-        }
-      }
-    }
-  </script>
-  <link rel="stylesheet" href="style.css">
+  <script type="module" crossorigin src="/assets/index-TOgB6CDL.js"></script>
+  <link rel="stylesheet" crossorigin href="/assets/index-Ccp5zK57.css">
 </head>
 
 <body class="bg-gray-900 text-white min-h-screen">
-  <div id="app" class="flex h-screen">
-    <!-- Sidebar -->
-    <div class="w-64 bg-gray-800 border-r border-gray-700 flex flex-col">
-      <div class="p-4 border-b border-gray-700">
-        <h1 class="text-lg font-semibold" id="project-title">API Documentation</h1>
-        <p class="text-sm text-gray-400 mt-1" id="project-description">Loading...</p>
-      </div>
-
-      <nav class="flex-1 p-4 space-y-2" id="sidebar-nav">
-        <!-- API Structure will be rendered here -->
-        <div class="mb-4">
-          <div class="flex items-center justify-between mb-2">
-            <h3 class="text-xs font-medium text-gray-400 uppercase tracking-wider">API Endpoints</h3>
-            <div class="flex space-x-1" id="action-buttons">
-              <button onclick="showCreateFolder()" title="New Folder" id="new-folder-btn"
-                class="hidden p-1 text-gray-400 hover:text-white hover:bg-gray-700 rounded">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6">
-                  </path>
-                </svg>
-              </button>
-              <button onclick="showCreateEndpoint()" title="New Endpoint" id="new-endpoint-btn"
-                class="hidden p-1 text-gray-400 hover:text-white hover:bg-gray-700 rounded">
-                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
-                  </path>
-                </svg>
-              </button>
-            </div>
-          </div>
-          <div id="api-structure"></div>
-        </div>
-      </nav>
-    </div>
-
-    <!-- Main Content -->
-    <div class="flex-1 flex flex-col overflow-hidden">
-      <!-- Header -->
-      <header class="bg-gray-800 border-b border-gray-700 p-4">
-        <div class="flex items-center justify-between">
-          <h2 id="page-title" class="text-xl font-semibold">API Documentation</h2>
-          <div class="flex items-center space-x-4">
-            <div id="edit-indicator" class="text-sm text-gray-400"></div>
-          </div>
-        </div>
-      </header>
-
-      <!-- Content Area -->
-      <main class="flex-1 overflow-auto" id="main-content">
-        <div id="loading" class="text-center py-8">
-          <div
-            class="animate-spin inline-block w-8 h-8 border-4 border-current border-t-transparent text-blue-600 rounded-full">
-          </div>
-          <p class="mt-2 text-gray-400">Loading...</p>
-        </div>
-      </main>
-    </div>
-  </div>
-
-  <!-- Modals will be inserted here -->
-  <div id="modal-container"></div>
-
-  <!-- Toast notifications -->
-  <div id="toast-container" class="fixed top-4 right-4 z-50 space-y-2"></div>
-
-  <script src="app.js"></script>
+  <div id="root"></div>
 </body>
 
 </html>
