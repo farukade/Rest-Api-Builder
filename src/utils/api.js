@@ -5,18 +5,19 @@ export const API_CONFIG = {
       ? "http://localhost:3000"
       : "http://localhost:3000",
   ENDPOINTS: {
-    CONFIG: "/api-docs/api/config",
-    STRUCTURE: "/api-docs/api/structure",
-    ENDPOINTS: "/api-docs/api/endpoints",
-    FOLDERS: "/api-docs/api/folders",
-    TEST_ENDPOINT: "/api-docs/api/test-endpoint",
+    CONFIG: "/config",
+    STRUCTURE: "/structure",
+    ENDPOINTS: "/endpoints",
+    FOLDERS: "/folders",
+    TEST_ENDPOINT: "/test-endpoint",
   },
+  BASE_PATH: "/api-docs",
 };
 
 // API helper function
 export async function apiCall(endpoint, options = {}) {
   try {
-    const url = API_CONFIG.BASE_URL + endpoint;
+    const url = API_CONFIG.BASE_URL + API_CONFIG.BASE_PATH + endpoint;
     console.log({ url });
     const response = await fetch(url, {
       headers: {
@@ -59,4 +60,8 @@ export function getStatusColorClass(statusCode) {
   if (code >= 200 && code < 300) return STATUS_COLORS["2xx"];
   if (code >= 400 && code < 500) return STATUS_COLORS["4xx"];
   return STATUS_COLORS["5xx"];
+}
+
+export function getBasePath() {
+  return API_CONFIG.BASE_PATH;
 }
