@@ -7,12 +7,21 @@
 
 const express = require("express");
 const apiDocsCreator = require("../../lib/index");
+const cors = require("cors");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 // Basic middleware
 app.use(express.json());
+
+app.use(cors());
+
+// Middleware
+app.use((req, res, next) => {
+  console.log(`🔗 Request: ${req.method} ${req.path}`);
+  next();
+});
 
 // Mount API Docs Creator at /api-docs
 app.use(
